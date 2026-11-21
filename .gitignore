@@ -1,0 +1,45 @@
+# ── Material de la cátedra (no forma parte del proyecto) ──
+*.pdf
+/*.svg
+/*.png
+
+# ── Variables de entorno (solo se versionan los .env.example) ──
+.env
+.env.*
+!.env.example
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# ── Bases de datos locales ──
+*.db
+*.sqlite3
+
+# ── Node / frontend ──
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+pnpm-debug.log*
+npm-debug.log*
+
+# ── Editores e IDEs ──
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# ── Sistema operativo ──
+.DS_Store
+Thumbs.db
+
+# ── Entregables ──
+*.zip
