@@ -1,10 +1,14 @@
 from datetime import datetime
 from enum import StrEnum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.core.clock import utc_now
+
+if TYPE_CHECKING:
+    from app.modules.pedidos.models import Pedido
 
 
 class Rol(StrEnum):
@@ -25,3 +29,5 @@ class Usuario(SQLModel, table=True):
     created_at: datetime = Field(
         default_factory=utc_now, sa_type=DateTime(timezone=True)
     )
+
+    pedidos: list["Pedido"] = Relationship(back_populates="usuario")
