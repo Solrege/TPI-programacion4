@@ -1,0 +1,68 @@
+# Categorías: lecturas públicas y escrituras solo para admin.
+# Requiere la extensión REST Client de VS Code. La cookie access_token
+# que devuelve el login se reutiliza en las peticiones siguientes.
+
+@baseUrl = http://localhost:8000/api/v1
+
+### Listar categorías activas (público)
+GET {{baseUrl}}/categorias
+
+### Detalle de una categoría (público; 404 si no existe o está dada de baja)
+GET {{baseUrl}}/categorias/1
+
+### Crear sin sesión (401)
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Postres"
+}
+
+### Login como admin (usuario del seed)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=Admin1234!
+
+### Crear categoría (201)
+# @name nueva
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Postres",
+  "descripcion": "Tortas, helados y flanes"
+}
+
+### Crear con nombre repetido (409)
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "nombre": "Postres"
+}
+
+### Crear con nombre demasiado corto (422)
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "nombre": "P"
+}
+
+### Actualización parcial: solo la descripción (200)
+PUT {{baseUrl}}/categorias/{{nueva.response.body.id}}
+Content-Type: application/json
+
+{
+  "descripcion": "Postres caseros"
+}
+
+### Baja lógica (204 sin cuerpo)
+DELETE {{baseUrl}}/categorias/{{nueva.response.body.id}}
+
+### Detalle de la categoría dada de baja (404)
+GET {{baseUrl}}/categorias/{{nueva.response.body.id}}
+
+### Baja de una categoría ya dada de baja (404)
+DELETE {{baseUrl}}/categorias/{{nueva.response.body.id}}
