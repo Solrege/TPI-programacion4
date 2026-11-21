@@ -10,6 +10,7 @@ line-length = 88
 select = ["E", "W", "F", "I", "B", "UP", "SIM", "N"]
 ignore = [
     "B008", # Depends(...) en valores por defecto es el patrón de FastAPI
+    "N818", # las excepciones de dominio usan los nombres del enunciado
 ]
 
 [tool.ruff.lint.isort]

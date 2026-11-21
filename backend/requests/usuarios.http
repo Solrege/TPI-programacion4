@@ -1,0 +1,26 @@
+# Gestión de usuarios (rol admin).
+# Requiere la extensión REST Client de VS Code. La cookie access_token
+# que devuelve el login se reutiliza en las peticiones siguientes.
+
+@baseUrl = http://localhost:8000/api/v1
+
+### Login como admin (usuario del seed)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=Admin1234!
+
+### Listar usuarios
+GET {{baseUrl}}/admin/usuarios
+
+### Desactivar un usuario (200; idempotente)
+POST {{baseUrl}}/admin/usuarios/2/desactivar
+
+### Activar un usuario (200; idempotente)
+POST {{baseUrl}}/admin/usuarios/2/activar
+
+### Usuario inexistente (404)
+POST {{baseUrl}}/admin/usuarios/9999/activar
+
+### El admin intenta desactivarse a sí mismo (400)
+POST {{baseUrl}}/admin/usuarios/1/desactivar

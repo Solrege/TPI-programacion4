@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import app.db.models  # noqa: F401
 from app.core.config import API_PREFIX, settings
 from app.core.database import create_all_tables
+from app.modules.usuarios.router import router as usuarios_router
 
 
 @asynccontextmanager
@@ -37,5 +38,7 @@ api_router = APIRouter(prefix=API_PREFIX)
 def health() -> dict[str, str]:
     return {"status": "ok"}
 
+
+api_router.include_router(usuarios_router)
 
 app.include_router(api_router)
