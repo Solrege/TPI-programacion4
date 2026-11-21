@@ -1,0 +1,4 @@
+# Herramientas de desarrollo (no necesarias para ejecutar la API).
+-r requirements.txt
+
+ruff==0.17.6

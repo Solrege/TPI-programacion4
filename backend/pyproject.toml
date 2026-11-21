@@ -1,0 +1,16 @@
+# Configuración de herramientas. Las dependencias se instalan con requirements.txt.
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+# E/W: estilo, F: errores, I: orden de imports, B: bugs comunes,
+# UP: sintaxis moderna, SIM: simplificaciones, N: nombres.
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "N"]
+ignore = [
+    "B008", # Depends(...) en valores por defecto es el patrón de FastAPI
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
