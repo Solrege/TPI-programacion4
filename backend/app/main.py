@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import app.db.models  # noqa: F401
 from app.core.config import API_PREFIX, settings
 from app.core.database import create_all_tables
+from app.modules.auth.router import router as auth_router
 from app.modules.usuarios.router import router as usuarios_router
 
 
@@ -39,6 +40,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+api_router.include_router(auth_router)
 api_router.include_router(usuarios_router)
 
 app.include_router(api_router)

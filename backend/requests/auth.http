@@ -1,0 +1,59 @@
+# Autenticación: registro, login con cookie HttpOnly, perfil y logout.
+# Requiere la extensión REST Client de VS Code. La cookie access_token
+# que devuelve el login se reutiliza en las peticiones siguientes.
+
+@baseUrl = http://localhost:8000/api/v1
+
+### Registro de un cliente (201)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "cliente1",
+  "full_name": "Cliente Uno",
+  "email": "cliente1@foodstore.com",
+  "password": "Cliente1234!"
+}
+
+### Registro duplicado (409)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "cliente1",
+  "full_name": "Cliente Uno",
+  "email": "otro@foodstore.com",
+  "password": "Cliente1234!"
+}
+
+### Registro inválido: email y password (422)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "cliente2",
+  "full_name": "Cliente Dos",
+  "email": "no-es-un-email",
+  "password": "corta"
+}
+
+### Login con credenciales incorrectas (401)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=cliente1&password=incorrecta
+
+### Login (200; el token viaja en la cookie, no en el cuerpo)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=cliente1&password=Cliente1234!
+
+### Perfil del usuario autenticado (200)
+GET {{baseUrl}}/auth/me
+
+### Logout (200; borra la cookie)
+POST {{baseUrl}}/auth/logout
+
+### Perfil sin sesión (401)
+GET {{baseUrl}}/auth/me
