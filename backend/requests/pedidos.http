@@ -1,0 +1,173 @@
+# Pedidos: creación transaccional, máquina de estados, cancelación y resumen.
+# Requiere la extensión REST Client de VS Code. La cookie access_token
+# que devuelve el login se reutiliza en las peticiones siguientes.
+# Los ids de producto corresponden al catálogo del seed.
+
+@baseUrl = http://localhost:8000/api/v1
+
+### Registro de un cliente
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "cliente",
+  "full_name": "Cliente Demo",
+  "email": "cliente@foodstore.com",
+  "password": "Cliente1234"
+}
+
+### Login como cliente
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=cliente&password=Cliente1234
+
+### Crear pedido (201): descuenta stock y copia nombre y precio
+# @name pedido
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [
+    { "producto_id": 1, "cantidad": 2 },
+    { "producto_id": 7, "cantidad": 1 }
+  ],
+  "forma_pago": "EFECTIVO",
+  "direccion_entrega": "Av. San Martín 1234",
+  "notas": "Tocar timbre"
+}
+
+### Producto repetido (400)
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [
+    { "producto_id": 1, "cantidad": 1 },
+    { "producto_id": 1, "cantidad": 2 }
+  ],
+  "forma_pago": "EFECTIVO",
+  "direccion_entrega": "Av. San Martín 1234"
+}
+
+### Producto no disponible (400)
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [{ "producto_id": 3, "cantidad": 1 }],
+  "forma_pago": "TRANSFERENCIA",
+  "direccion_entrega": "Av. San Martín 1234"
+}
+
+### Stock insuficiente (400): no se persiste nada
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [
+    { "producto_id": 2, "cantidad": 1 },
+    { "producto_id": 5, "cantidad": 999 }
+  ],
+  "forma_pago": "EFECTIVO",
+  "direccion_entrega": "Av. San Martín 1234"
+}
+
+### Producto inexistente (404)
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [{ "producto_id": 9999, "cantidad": 1 }],
+  "forma_pago": "EFECTIVO",
+  "direccion_entrega": "Av. San Martín 1234"
+}
+
+### Forma de pago y dirección inválidas (422)
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [{ "producto_id": 1, "cantidad": 1 }],
+  "forma_pago": "TARJETA",
+  "direccion_entrega": "abc"
+}
+
+### Mis pedidos (el cliente solo ve los propios)
+GET {{baseUrl}}/pedidos
+
+### Mis pedidos pendientes, paginados
+GET {{baseUrl}}/pedidos?estado=PENDIENTE&skip=0&limit=10
+
+### Detalle de un pedido propio
+GET {{baseUrl}}/pedidos/{{pedido.response.body.id}}
+
+### Resumen como cliente (403)
+GET {{baseUrl}}/pedidos/resumen
+
+### Cancelar pedido propio en PENDIENTE (200): restituye stock
+PATCH {{baseUrl}}/pedidos/{{pedido.response.body.id}}/cancelar
+
+### Cancelar de nuevo (400)
+PATCH {{baseUrl}}/pedidos/{{pedido.response.body.id}}/cancelar
+
+### Crear otro pedido para recorrer la máquina de estados
+# @name pedido2
+POST {{baseUrl}}/pedidos
+Content-Type: application/json
+
+{
+  "items": [{ "producto_id": 10, "cantidad": 2 }],
+  "forma_pago": "TRANSFERENCIA",
+  "direccion_entrega": "Belgrano 456"
+}
+
+### Login como admin (usuario del seed)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=Admin1234!
+
+### Todos los pedidos (admin)
+GET {{baseUrl}}/pedidos
+
+### Cancelar un pedido ajeno por /cancelar (403)
+PATCH {{baseUrl}}/pedidos/{{pedido2.response.body.id}}/cancelar
+
+### Transición inválida PENDIENTE -> ENTREGADO (400)
+PATCH {{baseUrl}}/pedidos/{{pedido2.response.body.id}}/estado
+Content-Type: application/json
+
+{
+  "estado": "ENTREGADO"
+}
+
+### PENDIENTE -> EN_PREPARACION (200)
+PATCH {{baseUrl}}/pedidos/{{pedido2.response.body.id}}/estado
+Content-Type: application/json
+
+{
+  "estado": "EN_PREPARACION"
+}
+
+### EN_PREPARACION -> ENTREGADO (200)
+PATCH {{baseUrl}}/pedidos/{{pedido2.response.body.id}}/estado
+Content-Type: application/json
+
+{
+  "estado": "ENTREGADO"
+}
+
+### Estado terminal: ENTREGADO -> CANCELADO (400)
+PATCH {{baseUrl}}/pedidos/{{pedido2.response.body.id}}/estado
+Content-Type: application/json
+
+{
+  "estado": "CANCELADO"
+}
+
+### Resumen del panel (admin)
+GET {{baseUrl}}/pedidos/resumen
+
+### Pedido inexistente (404)
+GET {{baseUrl}}/pedidos/9999
