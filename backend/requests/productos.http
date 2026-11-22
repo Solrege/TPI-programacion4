@@ -1,0 +1,100 @@
+# Productos: listado paginado público y escrituras solo para admin.
+# Requiere la extensión REST Client de VS Code. La cookie access_token
+# que devuelve el login se reutiliza en las peticiones siguientes.
+
+@baseUrl = http://localhost:8000/api/v1
+
+### Listado paginado (público; default skip=0, limit=20)
+GET {{baseUrl}}/productos
+
+### Búsqueda por nombre, sin distinguir mayúsculas
+GET {{baseUrl}}/productos?search=pizza
+
+### Filtro por categoría y disponibilidad, segunda página de 5
+GET {{baseUrl}}/productos?categoria_id=1&disponible=true&skip=5&limit=5
+
+### limit mayor a 100 (422)
+GET {{baseUrl}}/productos?limit=101
+
+### Detalle con su categoría (público)
+GET {{baseUrl}}/productos/1
+
+### Login como admin (usuario del seed)
+POST {{baseUrl}}/auth/token
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=Admin1234!
+
+### Crear producto (201)
+# @name nuevo
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "Flan casero",
+  "descripcion": "Con dulce de leche",
+  "precio_base": 3500,
+  "imagen_url": "https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c",
+  "stock": 10,
+  "categoria_id": 1
+}
+
+### Crear con categoría inexistente (404)
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "Sin categoría",
+  "precio_base": 100,
+  "categoria_id": 9999
+}
+
+### Crear con precio negativo (422)
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "nombre": "Precio inválido",
+  "precio_base": -1,
+  "categoria_id": 1
+}
+
+### Actualización parcial: solo el precio (200)
+PUT {{baseUrl}}/productos/{{nuevo.response.body.id}}
+Content-Type: application/json
+
+{
+  "precio_base": 3800
+}
+
+### Actualizar con nombre null (422)
+PUT {{baseUrl}}/productos/{{nuevo.response.body.id}}
+Content-Type: application/json
+
+{
+  "nombre": null
+}
+
+### Cambio de stock y disponibilidad (200)
+PATCH {{baseUrl}}/productos/{{nuevo.response.body.id}}/stock
+Content-Type: application/json
+
+{
+  "stock": 0,
+  "disponible": false
+}
+
+### Stock negativo (422)
+PATCH {{baseUrl}}/productos/{{nuevo.response.body.id}}/stock
+Content-Type: application/json
+
+{
+  "stock": -5,
+  "disponible": true
+}
+
+### Baja lógica (204 sin cuerpo)
+DELETE {{baseUrl}}/productos/{{nuevo.response.body.id}}
+
+### Detalle del producto dado de baja (404)
+GET {{baseUrl}}/productos/{{nuevo.response.body.id}}
