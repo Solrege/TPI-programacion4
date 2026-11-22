@@ -28,11 +28,8 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: async () => {
-        try {
-          await authApi.logout();
-        } finally {
-          useAuthStore.getState().limpiar();
-        }
+        await authApi.logout().catch(() => undefined);
+        useAuthStore.getState().limpiar();
       },
 
       checkSession: async () => {
