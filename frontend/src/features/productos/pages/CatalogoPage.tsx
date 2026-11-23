@@ -49,7 +49,7 @@ function CatalogoPage() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900">Catálogo</h1>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Catálogo</h1>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <form onSubmit={buscar} className="flex flex-1 items-end gap-2">

@@ -24,10 +24,10 @@ function CarritoPage() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900">Carrito</h1>
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Carrito</h1>
 
       <Card>
-        <ul className="divide-y divide-slate-200">
+        <ul className="divide-y divide-slate-200 dark:divide-slate-700">
           {items.map((item) => (
             <FilaCarrito key={item.producto_id} item={item} />
           ))}

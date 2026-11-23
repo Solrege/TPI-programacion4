@@ -102,11 +102,11 @@ function AdminProductosPage() {
       header: "Disponible",
       cell: (info) =>
         info.getValue() ? (
-          <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-800">
+          <span className="rounded-full bg-green-100 dark:bg-green-900/40 px-2 py-0.5 text-xs font-semibold text-green-800 dark:text-green-200">
             Sí
           </span>
         ) : (
-          <span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-700">
+          <span className="rounded-full bg-slate-200 dark:bg-slate-700 px-2 py-0.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
             No
           </span>
         ),
@@ -144,7 +144,7 @@ function AdminProductosPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">Productos</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Productos</h2>
         <Button onClick={abrirNuevo}>Nuevo producto</Button>
       </div>
 

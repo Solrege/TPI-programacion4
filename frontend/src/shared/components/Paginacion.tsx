@@ -22,7 +22,7 @@ function Paginacion({ pagina, total, limit, onCambiar }: PaginacionProps) {
       >
         Anterior
       </Button>
-      <span className="text-sm text-slate-600">
+      <span className="text-sm text-slate-600 dark:text-slate-400">
         Página {pagina + 1} de {totalPaginas}
       </span>
       <Button

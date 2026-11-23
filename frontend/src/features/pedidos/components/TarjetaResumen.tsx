@@ -9,8 +9,8 @@ interface TarjetaResumenProps {
 function TarjetaResumen({ titulo, valor, acento }: TarjetaResumenProps) {
   return (
     <Card className={`border-l-4 ${acento}`}>
-      <p className="text-sm text-slate-500">{titulo}</p>
-      <p className="mt-1 text-3xl font-bold text-slate-900">{valor}</p>
+      <p className="text-sm text-slate-500 dark:text-slate-400">{titulo}</p>
+      <p className="mt-1 text-3xl font-bold text-slate-900 dark:text-slate-100">{valor}</p>
     </Card>
   );
 }
