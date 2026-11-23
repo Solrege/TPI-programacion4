@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "@/features/auth/pages/LoginPage";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
 import UnauthorizedPage from "@/features/auth/pages/UnauthorizedPage";
+import AdminCategoriasPage from "@/features/categorias/pages/AdminCategoriasPage";
 import AdminResumenPage from "@/features/pedidos/pages/AdminResumenPage";
 import CarritoPage from "@/features/pedidos/pages/CarritoPage";
 import CheckoutPage from "@/features/pedidos/pages/CheckoutPage";
@@ -32,6 +33,7 @@ function AppRouter() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="resumen" replace />} />
               <Route path="resumen" element={<AdminResumenPage />} />
+              <Route path="categorias" element={<AdminCategoriasPage />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
