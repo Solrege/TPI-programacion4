@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -6,6 +7,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { handleApiError } from "@/shared/api/handleApiError";
+import Confirmacion from "@/shared/components/Confirmacion";
 import DataTable from "@/shared/components/DataTable";
 import EstadoError from "@/shared/components/EstadoError";
 import Skeleton from "@/shared/components/Skeleton";
@@ -30,13 +32,21 @@ function AdminUsuariosPage() {
   const activar = useActivarUsuario();
   const desactivar = useDesactivarUsuario();
   const sesionId = useAuthStore((state) => state.usuario?.id);
+  const [aDesactivar, setADesactivar] = useState<Usuario | undefined>();
 
-  const procesandoId = activar.isPending
-    ? activar.variables
-    : desactivar.isPending
-      ? desactivar.variables
-      : null;
-  const error = activar.error ?? desactivar.error;
+  const procesandoId = activar.isPending ? activar.variables : null;
+
+  const pedirDesactivacion = (usuario: Usuario) => {
+    activar.reset();
+    desactivar.reset();
+    setADesactivar(usuario);
+  };
+
+  const confirmarDesactivacion = () => {
+    if (aDesactivar) {
+      desactivar.mutate(aDesactivar.id, { onSuccess: () => setADesactivar(undefined) });
+    }
+  };
 
   const columnas = [
     columna.accessor("username", { header: "Usuario" }),
@@ -71,10 +81,7 @@ function AdminUsuariosPage() {
             <Button
               variante="secundario"
               disabled={procesando}
-              onClick={() => {
-                desactivar.reset();
-                activar.mutate(usuario.id);
-              }}
+              onClick={() => activar.mutate(usuario.id)}
             >
               {procesando ? "Activando..." : "Activar"}
             </Button>
@@ -84,15 +91,8 @@ function AdminUsuariosPage() {
           return null;
         }
         return (
-          <Button
-            variante="fantasma"
-            disabled={procesando}
-            onClick={() => {
-              activar.reset();
-              desactivar.mutate(usuario.id);
-            }}
-          >
-            {procesando ? "Desactivando..." : "Desactivar"}
+          <Button variante="fantasma" onClick={() => pedirDesactivacion(usuario)}>
+            Desactivar
           </Button>
         );
       },
@@ -113,7 +113,7 @@ function AdminUsuariosPage() {
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-slate-900">Usuarios</h2>
 
-      {error && <Alerta mensaje={handleApiError(error)} />}
+      {activar.isError && <Alerta mensaje={handleApiError(activar.error)} />}
 
       {usuarios.isPending ? (
         <Skeleton className="h-64" />
@@ -125,6 +125,17 @@ function AdminUsuariosPage() {
       ) : (
         <DataTable table={table} mensajeVacio="Todavía no hay usuarios." />
       )}
+
+      <Confirmacion
+        abierto={aDesactivar !== undefined}
+        titulo="Desactivar usuario"
+        mensaje={`¿Desactivar a «${aDesactivar?.username ?? ""}»? No va a poder iniciar sesión hasta que lo vuelvas a activar.`}
+        textoConfirmar="Desactivar"
+        procesando={desactivar.isPending}
+        error={desactivar.isError ? handleApiError(desactivar.error) : null}
+        onConfirmar={confirmarDesactivacion}
+        onCancelar={() => setADesactivar(undefined)}
+      />
     </div>
   );
 }
