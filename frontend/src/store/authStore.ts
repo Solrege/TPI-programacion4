@@ -5,6 +5,7 @@ import type { Credenciales } from "@/features/auth/types/auth";
 import type { Usuario } from "@/features/usuarios/types/usuario";
 import { configurarSesionInvalida } from "@/shared/api/axiosInstance";
 import { queryClient } from "@/shared/api/queryClient";
+import { useCartStore } from "./cartStore";
 
 interface AuthState {
   usuario: Usuario | null;
@@ -29,6 +30,7 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         await authApi.logout().catch(() => undefined);
+        useCartStore.getState().vaciar();
         useAuthStore.getState().limpiar();
       },
 
