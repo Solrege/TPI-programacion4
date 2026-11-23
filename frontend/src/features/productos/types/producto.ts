@@ -25,3 +25,20 @@ export interface FiltrosProductos {
   categoria_id?: number;
   disponible?: boolean;
 }
+
+export interface ProductoCreate {
+  nombre: string;
+  descripcion: string | null;
+  precio_base: number;
+  imagen_url: string | null;
+  stock: number;
+  disponible: boolean;
+  categoria_id: number;
+}
+
+export type ProductoUpdate = Partial<ProductoCreate>;
+
+export interface ProductoStockUpdate {
+  stock: number;
+  disponible: boolean;
+}

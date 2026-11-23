@@ -74,3 +74,22 @@ export function Select({ id, label, error, children, ...props }: SelectProps) {
 }
 
 export default Input;
+
+type CheckboxProps = { id: string; label: string } & Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+>;
+
+export function Checkbox({ id, label, ...props }: CheckboxProps) {
+  return (
+    <label htmlFor={id} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+      <input
+        id={id}
+        type="checkbox"
+        className="size-4 rounded border-slate-300 accent-orange-600"
+        {...props}
+      />
+      {label}
+    </label>
+  );
+}

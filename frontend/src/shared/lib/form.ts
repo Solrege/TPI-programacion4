@@ -39,3 +39,17 @@ export const validarEmail: Validador = ({ value }) => {
   }
   return EMAIL_REGEX.test(value.trim()) ? undefined : "Ingresá un email válido";
 };
+
+export const numeroMinimo =
+  (campo: string, min: number, entero = false) =>
+  ({ value }: { value: number }) => {
+    if (Number.isNaN(value)) {
+      return `${campo} es obligatorio`;
+    }
+    if (entero && !Number.isInteger(value)) {
+      return `${campo} debe ser un número entero`;
+    }
+    return value < min ? `${campo} no puede ser menor a ${min}` : undefined;
+  };
+
+export const valorNumerico = (valor: number) => (Number.isNaN(valor) ? "" : valor);
