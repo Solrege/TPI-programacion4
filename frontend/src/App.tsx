@@ -1,9 +1,15 @@
+import { useEffect } from "react";
+import AppRouter from "@/routes/AppRouter";
+import { useAuthStore } from "@/store/authStore";
+
 function App() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-orange-50">
-      <h1 className="text-3xl font-bold text-orange-600">Food Store</h1>
-    </main>
-  );
+  const checkSession = useAuthStore((state) => state.checkSession);
+
+  useEffect(() => {
+    void checkSession();
+  }, [checkSession]);
+
+  return <AppRouter />;
 }
 
 export default App;
