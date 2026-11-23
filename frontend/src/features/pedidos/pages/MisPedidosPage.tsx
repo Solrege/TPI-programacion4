@@ -11,6 +11,7 @@ import BadgeEstado from "@/shared/ui/BadgeEstado";
 import Button from "@/shared/ui/Button";
 import Card from "@/shared/ui/Card";
 import Modal from "@/shared/ui/Modal";
+import { useAuthStore } from "@/store/authStore";
 import PedidoDetalle from "../components/PedidoDetalle";
 import { useCancelarPedido } from "../hooks/useCancelarPedido";
 import { usePedidos } from "../hooks/usePedidos";
@@ -23,9 +24,12 @@ function MisPedidosPage() {
   const pedidos = usePedidos({ skip: pagina * LIMIT, limit: LIMIT });
   const cancelar = useCancelarPedido();
   const navigate = useNavigate();
+  const usuario = useAuthStore((state) => state.usuario);
+  const esAdmin = usuario?.role === "admin";
 
   const seleccionado = pedidos.data?.items.find((p) => p.id === seleccionadoId);
-  const puedeCancelar = seleccionado?.estado === "PENDIENTE";
+  const puedeCancelar =
+    seleccionado?.estado === "PENDIENTE" && seleccionado.usuario_id === usuario?.id;
 
   const cerrarDetalle = () => {
     setSeleccionadoId(null);
@@ -54,7 +58,7 @@ function MisPedidosPage() {
   if (pedidos.data.total === 0) {
     return (
       <EstadoVacio
-        titulo="Todavía no hiciste pedidos"
+        titulo={esAdmin ? "Todavía no hay pedidos" : "Todavía no hiciste pedidos"}
         accion={<Button onClick={() => navigate("/")}>Ver catálogo</Button>}
       />
     );
@@ -62,14 +66,28 @@ function MisPedidosPage() {
 
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-bold text-slate-900">Mis pedidos</h1>
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">Mis pedidos</h1>
+        {esAdmin && (
+          <p className="text-sm text-slate-500">
+            Como administrador ves los pedidos de todos los clientes.
+          </p>
+        )}
+      </div>
 
       <ul className="space-y-3">
         {pedidos.data.items.map((pedido) => (
           <li key={pedido.id}>
             <Card className="flex flex-wrap items-center gap-4">
               <div className="flex-1">
-                <p className="font-semibold text-slate-900">Pedido #{pedido.id}</p>
+                <p className="font-semibold text-slate-900">
+                  Pedido #{pedido.id}
+                  {esAdmin && (
+                    <span className="ml-2 text-sm font-normal text-slate-500">
+                      Usuario #{pedido.usuario_id}
+                    </span>
+                  )}
+                </p>
                 <p className="text-sm text-slate-500">
                   {formatearFecha(pedido.created_at)} · {pedido.items.length}{" "}
                   {pedido.items.length === 1 ? "producto" : "productos"}

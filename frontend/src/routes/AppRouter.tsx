@@ -28,8 +28,6 @@ function AppRouter() {
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/checkout" element={<CheckoutPage />} />
-          </Route>
-          <Route element={<ProtectedRoute roles={["user"]} />}>
             <Route path="/mis-pedidos" element={<MisPedidosPage />} />
           </Route>
           <Route element={<ProtectedRoute roles={["admin"]} />}>

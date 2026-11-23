@@ -15,18 +15,25 @@ function ProductoCard({ producto }: { producto: Producto }) {
 
   return (
     <Card className="flex flex-col overflow-hidden p-0">
-      {producto.imagen_url ? (
-        <img
-          src={producto.imagen_url}
-          alt={producto.nombre}
-          loading="lazy"
-          className="h-40 w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-40 items-center justify-center bg-orange-50 text-4xl font-bold text-orange-300">
-          {producto.nombre.charAt(0)}
-        </div>
-      )}
+      <div className="relative">
+        {producto.imagen_url ? (
+          <img
+            src={producto.imagen_url}
+            alt={producto.nombre}
+            loading="lazy"
+            className="h-40 w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-40 items-center justify-center bg-orange-50 text-4xl font-bold text-orange-300">
+            {producto.nombre.charAt(0)}
+          </div>
+        )}
+        {enCarrito > 0 && (
+          <span className="absolute right-2 top-2 rounded-full bg-orange-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+            {enCarrito} en el carrito
+          </span>
+        )}
+      </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <span className="text-xs font-medium uppercase tracking-wide text-orange-600">
@@ -62,9 +69,6 @@ function ProductoCard({ producto }: { producto: Producto }) {
               ? "Sin más stock"
               : "Agregar al carrito"}
         </Button>
-        {enCarrito > 0 && (
-          <p className="text-center text-xs text-slate-500">En el carrito: {enCarrito}</p>
-        )}
       </div>
     </Card>
   );
