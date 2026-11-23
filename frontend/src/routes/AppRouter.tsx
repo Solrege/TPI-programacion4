@@ -10,6 +10,7 @@ import CheckoutPage from "@/features/pedidos/pages/CheckoutPage";
 import MisPedidosPage from "@/features/pedidos/pages/MisPedidosPage";
 import AdminProductosPage from "@/features/productos/pages/AdminProductosPage";
 import CatalogoPage from "@/features/productos/pages/CatalogoPage";
+import AdminUsuariosPage from "@/features/usuarios/pages/AdminUsuariosPage";
 import AdminLayout from "@/shared/layout/AdminLayout";
 import MainLayout from "@/shared/layout/MainLayout";
 import NotFoundPage from "@/shared/layout/NotFoundPage";
@@ -38,6 +39,7 @@ function AppRouter() {
               <Route path="categorias" element={<AdminCategoriasPage />} />
               <Route path="productos" element={<AdminProductosPage />} />
               <Route path="pedidos" element={<AdminPedidosPage />} />
+              <Route path="usuarios" element={<AdminUsuariosPage />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
