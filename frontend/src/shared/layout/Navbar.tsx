@@ -42,7 +42,7 @@ function Navbar() {
             </span>
           )}
         </NavLink>
-        {usuario?.role === "user" && (
+        {usuario && (
           <NavLink to="/mis-pedidos" className={claseEnlace}>
             Mis pedidos
           </NavLink>
