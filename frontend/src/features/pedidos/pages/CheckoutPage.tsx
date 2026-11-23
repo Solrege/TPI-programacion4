@@ -4,6 +4,7 @@ import EstadoVacio from "@/shared/components/EstadoVacio";
 import { formatearPrecio } from "@/shared/lib/format";
 import Button from "@/shared/ui/Button";
 import Card from "@/shared/ui/Card";
+import { useAuthStore } from "@/store/authStore";
 import { useCartStore } from "@/store/cartStore";
 import FormularioCheckout from "../components/FormularioCheckout";
 import type { DatosCheckout } from "../components/FormularioCheckout";
@@ -13,6 +14,7 @@ function CheckoutPage() {
   const items = useCartStore((state) => state.items);
   const total = useCartStore((state) => state.total());
   const vaciar = useCartStore((state) => state.vaciar);
+  const usuario = useAuthStore((state) => state.usuario);
   const crearPedido = useCrearPedido();
   const navigate = useNavigate();
 
@@ -27,7 +29,9 @@ function CheckoutPage() {
       notas: datos.notas.trim() || null,
     });
     vaciar();
-    navigate("/mis-pedidos", { replace: true });
+    navigate(usuario?.role === "admin" ? "/admin/pedidos" : "/mis-pedidos", {
+      replace: true,
+    });
   };
 
   if (items.length === 0) {

@@ -34,3 +34,14 @@ export interface Pedido {
   updated_at: string;
   items: DetallePedido[];
 }
+
+export interface PedidosPaginados {
+  total: number;
+  items: Pedido[];
+}
+
+export interface FiltrosPedidos {
+  skip: number;
+  limit: number;
+  estado?: EstadoPedido;
+}
