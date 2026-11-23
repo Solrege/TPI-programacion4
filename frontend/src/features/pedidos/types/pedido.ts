@@ -35,6 +35,10 @@ export interface Pedido {
   items: DetallePedido[];
 }
 
+export interface CambioEstado {
+  estado: EstadoPedido;
+}
+
 export interface PedidosPaginados {
   total: number;
   items: Pedido[];

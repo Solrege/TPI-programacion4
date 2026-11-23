@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/shared/api/axiosInstance";
 import type {
+  CambioEstado,
   FiltrosPedidos,
   Pedido,
   PedidoCreate,
@@ -21,6 +22,17 @@ export async function getPedidos(filtros: FiltrosPedidos): Promise<PedidosPagina
 
 export async function cancelarPedido(pedidoId: number): Promise<Pedido> {
   const { data } = await axiosInstance.patch<Pedido>(`/pedidos/${pedidoId}/cancelar`);
+  return data;
+}
+
+export async function cambiarEstadoPedido({
+  id,
+  datos,
+}: {
+  id: number;
+  datos: CambioEstado;
+}): Promise<Pedido> {
+  const { data } = await axiosInstance.patch<Pedido>(`/pedidos/${id}/estado`, datos);
   return data;
 }
 
