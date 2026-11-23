@@ -8,9 +8,9 @@ interface EstadoVacioProps {
 
 function EstadoVacio({ titulo, mensaje, accion }: EstadoVacioProps) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-      <p className="text-lg font-semibold text-slate-800">{titulo}</p>
-      {mensaje && <p className="text-sm text-slate-500">{mensaje}</p>}
+    <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-6 py-12 text-center">
+      <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">{titulo}</p>
+      {mensaje && <p className="text-sm text-slate-500 dark:text-slate-400">{mensaje}</p>}
       {accion && <div className="mt-2">{accion}</div>}
     </div>
   );

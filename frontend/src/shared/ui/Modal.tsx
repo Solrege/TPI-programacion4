@@ -37,10 +37,10 @@ function Modal({ abierto, titulo, onClose, children }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={tituloId}
-        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6 shadow-xl"
+        className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white dark:bg-slate-900 p-6 shadow-xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id={tituloId} className="mb-4 text-lg font-bold text-slate-900">
+        <h2 id={tituloId} className="mb-4 text-lg font-bold text-slate-900 dark:text-slate-100">
           {titulo}
         </h2>
         {children}

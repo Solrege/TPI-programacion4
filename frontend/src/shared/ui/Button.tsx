@@ -4,9 +4,9 @@ type Variante = "primario" | "secundario" | "peligro" | "fantasma" | "exito";
 
 const VARIANTES: Record<Variante, string> = {
   primario: "bg-orange-600 text-white shadow-sm hover:bg-orange-700",
-  secundario: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+  secundario: "border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800",
   peligro: "bg-red-600 text-white shadow-sm hover:bg-red-700",
-  fantasma: "text-slate-700 hover:bg-slate-100",
+  fantasma: "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800",
   exito: "bg-green-600 text-white shadow-sm",
 };
 

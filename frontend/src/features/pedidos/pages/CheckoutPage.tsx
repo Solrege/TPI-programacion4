@@ -43,7 +43,7 @@ function CheckoutPage() {
   return (
     <section className="grid gap-6 lg:grid-cols-2">
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-slate-900">Confirmar pedido</h1>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Confirmar pedido</h1>
         <Card>
           <FormularioCheckout
             onConfirmar={confirmar}
@@ -53,8 +53,8 @@ function CheckoutPage() {
       </div>
 
       <Card className="h-fit">
-        <h2 className="mb-3 font-semibold text-slate-900">Resumen</h2>
-        <ul className="divide-y divide-slate-200 text-sm">
+        <h2 className="mb-3 font-semibold text-slate-900 dark:text-slate-100">Resumen</h2>
+        <ul className="divide-y divide-slate-200 dark:divide-slate-700 text-sm">
           {items.map((item) => (
             <li key={item.producto_id} className="flex justify-between py-2">
               <span>
@@ -64,7 +64,7 @@ function CheckoutPage() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 flex justify-between border-t border-slate-200 pt-3 font-bold">
+        <p className="mt-3 flex justify-between border-t border-slate-200 dark:border-slate-700 pt-3 font-bold">
           <span>Total</span>
           <span>{formatearPrecio(total)}</span>
         </p>

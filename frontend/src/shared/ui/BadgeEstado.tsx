@@ -1,10 +1,10 @@
 import type { EstadoPedido } from "@/features/pedidos/types/pedido";
 
 const ESTILOS: Record<EstadoPedido, { texto: string; clases: string }> = {
-  PENDIENTE: { texto: "Pendiente", clases: "bg-amber-100 text-amber-800" },
-  EN_PREPARACION: { texto: "En preparación", clases: "bg-blue-100 text-blue-800" },
-  ENTREGADO: { texto: "Entregado", clases: "bg-green-100 text-green-800" },
-  CANCELADO: { texto: "Cancelado", clases: "bg-slate-200 text-slate-700" },
+  PENDIENTE: { texto: "Pendiente", clases: "bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200" },
+  EN_PREPARACION: { texto: "En preparación", clases: "bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200" },
+  ENTREGADO: { texto: "Entregado", clases: "bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-200" },
+  CANCELADO: { texto: "Cancelado", clases: "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300" },
 };
 
 function BadgeEstado({ estado }: { estado: EstadoPedido }) {

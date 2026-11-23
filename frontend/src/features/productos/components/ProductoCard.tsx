@@ -55,7 +55,7 @@ function ProductoCard({ producto }: { producto: Producto }) {
           />
         ) : (
           <div
-            className={`flex h-40 items-center justify-center bg-orange-50 text-4xl font-bold text-orange-300 ${sinStock ? "opacity-60 grayscale" : ""}`}
+            className={`flex h-40 items-center justify-center bg-orange-50 dark:bg-orange-950/40 text-4xl font-bold text-orange-300 dark:text-orange-500 ${sinStock ? "opacity-60 grayscale" : ""}`}
           >
             {producto.nombre.charAt(0)}
           </div>
@@ -73,19 +73,19 @@ function ProductoCard({ producto }: { producto: Producto }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <span className="text-xs font-medium uppercase tracking-wide text-orange-600">
+        <span className="text-xs font-medium uppercase tracking-wide text-orange-600 dark:text-orange-400">
           {producto.categoria.nombre}
         </span>
-        <h2 className="font-semibold text-slate-900">{producto.nombre}</h2>
+        <h2 className="font-semibold text-slate-900 dark:text-slate-100">{producto.nombre}</h2>
         {producto.descripcion && (
-          <p className="text-sm text-slate-600">{producto.descripcion}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{producto.descripcion}</p>
         )}
 
         <div className="mt-auto flex items-center justify-between pt-2">
-          <span className="text-lg font-bold text-slate-900">
+          <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
             {formatearPrecio(producto.precio_base)}
           </span>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-slate-500 dark:text-slate-400">
             {sinStock
               ? "Sin stock"
               : alcanzoStock
@@ -118,7 +118,7 @@ function ProductoCard({ producto }: { producto: Producto }) {
             )}
           </Button>
         </div>
-        <p className="-mt-1 h-4 text-center text-xs font-medium text-green-700" aria-live="polite">
+        <p className="-mt-1 h-4 text-center text-xs font-medium text-green-700 dark:text-green-400" aria-live="polite">
           {agregado && `${agregados} ${agregados === 1 ? "agregado" : "agregados"} al carrito`}
         </p>
       </div>

@@ -106,7 +106,7 @@ function AdminCategoriasPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-900">Categorías</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Categorías</h2>
         <Button onClick={abrirNueva}>Nueva categoría</Button>
       </div>
 

@@ -26,7 +26,7 @@ function Confirmacion({
   return (
     <Modal abierto={abierto} titulo={titulo} onClose={onCancelar}>
       <div className="space-y-4">
-        <p className="text-sm text-slate-700">{mensaje}</p>
+        <p className="text-sm text-slate-700 dark:text-slate-300">{mensaje}</p>
         {error && <Alerta mensaje={error} />}
         <div className="flex justify-end gap-2">
           <Button variante="secundario" onClick={onCancelar}>

@@ -6,9 +6,9 @@ import type {
 } from "react";
 
 const BASE =
-  "w-full rounded-md border bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:ring-2";
-const OK = "border-slate-300 focus:border-orange-500 focus:ring-orange-200";
-const ERROR = "border-red-400 focus:border-red-500 focus:ring-red-200";
+  "w-full rounded-md border bg-white dark:bg-slate-900 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 outline-none transition focus:ring-2";
+const OK = "border-slate-300 dark:border-slate-600 focus:border-orange-500 focus:ring-orange-200 dark:focus:ring-orange-900";
+const ERROR = "border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900";
 
 interface CampoProps {
   id: string;
@@ -19,12 +19,12 @@ interface CampoProps {
 function Campo({ id, label, error, children }: CampoProps & { children: ReactNode }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium text-slate-700">
+      <label htmlFor={id} className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
         {label}
       </label>
       {children}
       {error && (
-        <p id={`${id}-error`} className="mt-1 text-xs text-red-600">
+        <p id={`${id}-error`} className="mt-1 text-xs text-red-600 dark:text-red-400">
           {error}
         </p>
       )}
@@ -82,11 +82,11 @@ type CheckboxProps = { id: string; label: string } & Omit<
 
 export function Checkbox({ id, label, ...props }: CheckboxProps) {
   return (
-    <label htmlFor={id} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700">
+    <label htmlFor={id} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
       <input
         id={id}
         type="checkbox"
-        className="size-4 rounded border-slate-300 accent-orange-600"
+        className="size-4 rounded border-slate-300 dark:border-slate-600 accent-orange-600"
         {...props}
       />
       {label}

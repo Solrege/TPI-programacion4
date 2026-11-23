@@ -10,8 +10,8 @@ function FilaCarrito({ item }: { item: ItemCarrito }) {
   return (
     <li className="flex flex-wrap items-center gap-4 py-4">
       <div className="min-w-40 flex-1">
-        <p className="font-medium text-slate-900">{item.nombre}</p>
-        <p className="text-sm text-slate-500">{formatearPrecio(item.precio_unitario)} c/u</p>
+        <p className="font-medium text-slate-900 dark:text-slate-100">{item.nombre}</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{formatearPrecio(item.precio_unitario)} c/u</p>
       </div>
 
       <div className="flex items-center gap-2">
@@ -34,7 +34,7 @@ function FilaCarrito({ item }: { item: ItemCarrito }) {
         </Button>
       </div>
 
-      <p className="w-28 text-right font-semibold text-slate-900">
+      <p className="w-28 text-right font-semibold text-slate-900 dark:text-slate-100">
         {formatearPrecio(item.precio_unitario * item.cantidad)}
       </p>
 

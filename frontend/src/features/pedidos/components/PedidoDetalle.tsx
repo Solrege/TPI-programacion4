@@ -8,25 +8,25 @@ function PedidoDetalle({ pedido }: { pedido: Pedido }) {
   return (
     <div className="space-y-4 text-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-slate-500">{formatearFecha(pedido.created_at)}</span>
+        <span className="text-slate-500 dark:text-slate-400">{formatearFecha(pedido.created_at)}</span>
         <BadgeEstado estado={pedido.estado} />
       </div>
 
       <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-        <dt className="text-slate-500">Dirección</dt>
+        <dt className="text-slate-500 dark:text-slate-400">Dirección</dt>
         <dd>{pedido.direccion_entrega}</dd>
-        <dt className="text-slate-500">Forma de pago</dt>
+        <dt className="text-slate-500 dark:text-slate-400">Forma de pago</dt>
         <dd>{FORMAS_PAGO[pedido.forma_pago]}</dd>
         {pedido.notas && (
           <>
-            <dt className="text-slate-500">Notas</dt>
+            <dt className="text-slate-500 dark:text-slate-400">Notas</dt>
             <dd>{pedido.notas}</dd>
           </>
         )}
       </dl>
 
       <table className="w-full">
-        <thead className="border-b border-slate-200 text-left text-slate-500">
+        <thead className="border-b border-slate-200 dark:border-slate-700 text-left text-slate-500 dark:text-slate-400">
           <tr>
             <th className="py-2 font-medium">Producto</th>
             <th className="py-2 text-right font-medium">Cant.</th>
@@ -34,7 +34,7 @@ function PedidoDetalle({ pedido }: { pedido: Pedido }) {
             <th className="py-2 text-right font-medium">Subtotal</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
           {pedido.items.map((item) => (
             <tr key={item.producto_id}>
               <td className="py-2">{item.nombre_producto}</td>
@@ -44,7 +44,7 @@ function PedidoDetalle({ pedido }: { pedido: Pedido }) {
             </tr>
           ))}
         </tbody>
-        <tfoot className="border-t border-slate-200 font-bold">
+        <tfoot className="border-t border-slate-200 dark:border-slate-700 font-bold">
           <tr>
             <td className="py-2" colSpan={3}>
               Total

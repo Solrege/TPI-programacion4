@@ -9,13 +9,13 @@ interface SelectorCantidadProps {
 }
 
 const BOTON =
-  "flex size-9 cursor-pointer items-center justify-center text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50";
+  "flex size-9 cursor-pointer items-center justify-center text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50";
 
 function SelectorCantidad({ id, valor, max, disabled = false, onCambiar }: SelectorCantidadProps) {
   const actual = ajustarCantidad(valor, max);
 
   return (
-    <div className="flex items-center rounded-md border border-slate-300 bg-white">
+    <div className="flex items-center rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900">
       <button
         type="button"
         className={BOTON}
@@ -38,7 +38,7 @@ function SelectorCantidad({ id, valor, max, disabled = false, onCambiar }: Selec
         value={valorNumerico(valor)}
         onChange={(e) => onCambiar(e.target.valueAsNumber)}
         onBlur={() => onCambiar(actual)}
-        className="w-10 border-x border-slate-300 py-1.5 text-center text-sm outline-none [appearance:textfield] disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="w-10 border-x border-slate-300 dark:border-slate-600 py-1.5 text-center text-sm outline-none [appearance:textfield] disabled:opacity-50 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
       <button
         type="button"

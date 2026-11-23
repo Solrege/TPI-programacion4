@@ -51,7 +51,7 @@ function AdminPedidosPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 className="text-lg font-semibold text-slate-900">Pedidos</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Pedidos</h2>
         <div className="w-56">
           <Select
             id="filtro-estado"

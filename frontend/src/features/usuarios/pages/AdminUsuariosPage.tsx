@@ -56,18 +56,18 @@ function AdminUsuariosPage() {
       header: "Rol",
       cell: (info) =>
         info.getValue() === "admin" ? (
-          <Etiqueta texto="Admin" clases="bg-orange-100 text-orange-800" />
+          <Etiqueta texto="Admin" clases="bg-orange-100 dark:bg-orange-900/40 text-orange-800 dark:text-orange-200" />
         ) : (
-          <Etiqueta texto="Cliente" clases="bg-slate-100 text-slate-700" />
+          <Etiqueta texto="Cliente" clases="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300" />
         ),
     }),
     columna.accessor("disabled", {
       header: "Estado",
       cell: (info) =>
         info.getValue() ? (
-          <Etiqueta texto="Inactivo" clases="bg-slate-200 text-slate-700" />
+          <Etiqueta texto="Inactivo" clases="bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300" />
         ) : (
-          <Etiqueta texto="Activo" clases="bg-green-100 text-green-800" />
+          <Etiqueta texto="Activo" clases="bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-200" />
         ),
     }),
     columna.display({
@@ -111,7 +111,7 @@ function AdminUsuariosPage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-slate-900">Usuarios</h2>
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Usuarios</h2>
 
       {activar.isError && <Alerta mensaje={handleApiError(activar.error)} />}
 
