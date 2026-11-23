@@ -1,7 +1,22 @@
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from pydantic import model_validator
 from sqlmodel import SQLModel
+
+
+class ErrorResponse(SQLModel):
+    detail: str
+
+
+SESION = {401: "Sin sesión o sesión vencida"}
+SOLO_ADMIN = {**SESION, 403: "Requiere rol admin"}
+
+
+def errores(codigos: dict[int, str]) -> dict[int | str, dict[str, Any]]:
+    return {
+        codigo: {"model": ErrorResponse, "description": descripcion}
+        for codigo, descripcion in codigos.items()
+    }
 
 
 class PartialUpdate(SQLModel):
