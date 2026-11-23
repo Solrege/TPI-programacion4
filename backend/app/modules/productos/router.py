@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
 from app.core.deps import require_role
+from app.core.schemas import SOLO_ADMIN, errores
 from app.modules.categorias.service import CategoriaNoEncontrada
 from app.modules.productos.schemas import (
     ProductoCreate,
@@ -19,6 +20,8 @@ from app.modules.usuarios.schemas import UserPublic
 router = APIRouter(prefix="/productos", tags=["productos"])
 
 Admin = Annotated[UserPublic, Depends(require_role([Rol.ADMIN]))]
+
+NO_ENCONTRADO = {404: "Producto no encontrado o dado de baja"}
 
 
 def get_producto_service() -> ProductoService:
@@ -46,7 +49,9 @@ def listar_productos(
     )
 
 
-@router.get("/{producto_id}", response_model=ProductoRead)
+@router.get(
+    "/{producto_id}", response_model=ProductoRead, responses=errores(NO_ENCONTRADO)
+)
 def obtener_producto(producto_id: int, service: Service) -> ProductoRead:
     try:
         return service.obtener(producto_id)
@@ -54,7 +59,14 @@ def obtener_producto(producto_id: int, service: Service) -> ProductoRead:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(e)) from e
 
 
-@router.post("", response_model=ProductoRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "",
+    response_model=ProductoRead,
+    status_code=status.HTTP_201_CREATED,
+    responses=errores(
+        {**SOLO_ADMIN, 404: "La categoría no existe o está dada de baja"}
+    ),
+)
 def crear_producto(
     data: ProductoCreate, _admin: Admin, service: Service
 ) -> ProductoRead:
@@ -64,7 +76,16 @@ def crear_producto(
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(e)) from e
 
 
-@router.put("/{producto_id}", response_model=ProductoRead)
+@router.put(
+    "/{producto_id}",
+    response_model=ProductoRead,
+    responses=errores(
+        {
+            **SOLO_ADMIN,
+            404: "Producto no encontrado, o la categoría no existe o está dada de baja",
+        }
+    ),
+)
 def actualizar_producto(
     producto_id: int, data: ProductoUpdate, _admin: Admin, service: Service
 ) -> ProductoRead:
@@ -74,7 +95,11 @@ def actualizar_producto(
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(e)) from e
 
 
-@router.patch("/{producto_id}/stock", response_model=ProductoRead)
+@router.patch(
+    "/{producto_id}/stock",
+    response_model=ProductoRead,
+    responses=errores({**SOLO_ADMIN, **NO_ENCONTRADO}),
+)
 def actualizar_stock(
     producto_id: int, data: ProductoStockUpdate, _admin: Admin, service: Service
 ) -> ProductoRead:
@@ -84,7 +109,11 @@ def actualizar_stock(
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(e)) from e
 
 
-@router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{producto_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=errores({**SOLO_ADMIN, **NO_ENCONTRADO}),
+)
 def eliminar_producto(producto_id: int, _admin: Admin, service: Service) -> Response:
     try:
         service.eliminar(producto_id)

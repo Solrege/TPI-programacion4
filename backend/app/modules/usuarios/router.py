@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.core.deps import require_role
+from app.core.schemas import SOLO_ADMIN, errores
 from app.modules.usuarios.models import Rol
 from app.modules.usuarios.schemas import UserPublic
 from app.modules.usuarios.service import (
@@ -24,12 +25,16 @@ def get_usuario_service() -> UsuarioService:
 Service = Annotated[UsuarioService, Depends(get_usuario_service)]
 
 
-@router.get("", response_model=list[UserPublic])
+@router.get("", response_model=list[UserPublic], responses=errores(SOLO_ADMIN))
 def listar_usuarios(_admin: Admin, service: Service) -> list[UserPublic]:
     return service.listar()
 
 
-@router.post("/{user_id}/activar", response_model=UserPublic)
+@router.post(
+    "/{user_id}/activar",
+    response_model=UserPublic,
+    responses=errores({**SOLO_ADMIN, 404: "Usuario no encontrado"}),
+)
 def activar_usuario(user_id: int, _admin: Admin, service: Service) -> UserPublic:
     try:
         return service.activar(user_id)
@@ -37,7 +42,17 @@ def activar_usuario(user_id: int, _admin: Admin, service: Service) -> UserPublic
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(e)) from e
 
 
-@router.post("/{user_id}/desactivar", response_model=UserPublic)
+@router.post(
+    "/{user_id}/desactivar",
+    response_model=UserPublic,
+    responses=errores(
+        {
+            **SOLO_ADMIN,
+            404: "Usuario no encontrado",
+            400: "Un administrador no puede desactivarse a sí mismo",
+        }
+    ),
+)
 def desactivar_usuario(user_id: int, admin: Admin, service: Service) -> UserPublic:
     try:
         return service.desactivar(user_id, admin_id=admin.id)
