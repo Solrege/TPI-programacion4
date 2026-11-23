@@ -15,6 +15,11 @@ class BaseRepository(Generic[T]):
     def get_by_id(self, entity_id: int) -> T | None:
         return self.session.get(self.model, entity_id)
 
+    def get_for_update(self, entity_id: int) -> T | None:
+        return self.session.get(
+            self.model, entity_id, with_for_update=True, populate_existing=True
+        )
+
     def get_all(self, skip: int = 0, limit: int | None = None) -> list[T]:
         stmt = (
             select(self.model)

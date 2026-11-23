@@ -69,9 +69,11 @@ class PedidoService:
                     notas=data.notas,
                 )
             )
+            ids = sorted(item.producto_id for item in data.items)
+            productos = {pid: uow.productos.get_for_update(pid) for pid in ids}
             total = 0.0
             for item in data.items:
-                producto = uow.productos.get_by_id(item.producto_id)
+                producto = productos[item.producto_id]
                 if producto is None or not producto.activo:
                     raise ProductoNoEncontrado(item.producto_id)
                 if not producto.disponible:
@@ -121,13 +123,13 @@ class PedidoService:
 
     def cambiar_estado(self, pedido_id: int, nuevo: EstadoPedido) -> PedidoRead:
         with self.uow as uow:
-            pedido = self._obtener(uow, pedido_id)
+            pedido = self._obtener(uow, pedido_id, bloquear=True)
             self._aplicar_transicion(uow, pedido, nuevo)
             return PedidoRead.model_validate(pedido)
 
     def cancelar(self, pedido_id: int, usuario: UserPublic) -> PedidoRead:
         with self.uow as uow:
-            pedido = self._obtener(uow, pedido_id)
+            pedido = self._obtener(uow, pedido_id, bloquear=True)
             if pedido.usuario_id != usuario.id:
                 raise PedidoAjeno()
             if pedido.estado != EstadoPedido.PENDIENTE:
@@ -150,8 +152,13 @@ class PedidoService:
             )
 
     @staticmethod
-    def _obtener(uow: PedidoUnitOfWork, pedido_id: int) -> Pedido:
-        pedido = uow.pedidos.get_by_id(pedido_id)
+    def _obtener(
+        uow: PedidoUnitOfWork, pedido_id: int, *, bloquear: bool = False
+    ) -> Pedido:
+        if bloquear:
+            pedido = uow.pedidos.get_for_update(pedido_id)
+        else:
+            pedido = uow.pedidos.get_by_id(pedido_id)
         if pedido is None:
             raise PedidoNoEncontrado(pedido_id)
         return pedido
@@ -172,8 +179,8 @@ class PedidoService:
         if nuevo not in TRANSICIONES[actual]:
             raise TransicionInvalida(actual, nuevo)
         if nuevo == EstadoPedido.CANCELADO:
-            for item in pedido.items:
-                producto = uow.productos.get_by_id(item.producto_id)
+            for item in sorted(pedido.items, key=lambda i: i.producto_id):
+                producto = uow.productos.get_for_update(item.producto_id)
                 if producto is not None:
                     producto.stock += item.cantidad
         pedido.estado = nuevo
