@@ -35,6 +35,10 @@ export interface Pedido {
   items: DetallePedido[];
 }
 
+export interface CambioEstado {
+  estado: EstadoPedido;
+}
+
 export interface PedidosPaginados {
   total: number;
   items: Pedido[];
@@ -44,4 +48,13 @@ export interface FiltrosPedidos {
   skip: number;
   limit: number;
   estado?: EstadoPedido;
+}
+
+export interface ResumenPedidos {
+  pendientes: number;
+  en_preparacion: number;
+  entregados: number;
+  cancelados: number;
+  pedidos_hoy: number;
+  ingresos_entregados: number;
 }
