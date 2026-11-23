@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
+import { ajustarCantidad } from "@/shared/lib/form";
 import { formatearPrecio } from "@/shared/lib/format";
 import Button from "@/shared/ui/Button";
 import Card from "@/shared/ui/Card";
 import { useCartStore } from "@/store/cartStore";
 import type { Producto } from "../types/producto";
+import SelectorCantidad from "./SelectorCantidad";
 
 function ProductoCard({ producto }: { producto: Producto }) {
   const agregar = useCartStore((state) => state.agregar);
@@ -10,8 +13,35 @@ function ProductoCard({ producto }: { producto: Producto }) {
     (state) => state.items.find((i) => i.producto_id === producto.id)?.cantidad ?? 0,
   );
 
+  const [cantidad, setCantidad] = useState(1);
+  const [agregados, setAgregados] = useState(0);
+  const agregado = agregados > 0;
+
+  useEffect(() => {
+    if (agregados === 0) return;
+    const temporizador = setTimeout(() => {
+      setAgregados(0);
+      setCantidad(1);
+    }, 1500);
+    return () => clearTimeout(temporizador);
+  }, [agregados]);
+
   const sinStock = !producto.disponible || producto.stock === 0;
-  const alcanzoStock = enCarrito >= producto.stock;
+  const restante = producto.stock - enCarrito;
+  const alcanzoStock = restante <= 0;
+
+  const agregarAlCarrito = () => {
+    const unidades = ajustarCantidad(cantidad, restante);
+    agregar(
+      {
+        producto_id: producto.id,
+        nombre: producto.nombre,
+        precio_unitario: producto.precio_base,
+      },
+      unidades,
+    );
+    setAgregados(unidades);
+  };
 
   return (
     <Card className="flex flex-col overflow-hidden p-0">
@@ -21,14 +51,21 @@ function ProductoCard({ producto }: { producto: Producto }) {
             src={producto.imagen_url}
             alt={producto.nombre}
             loading="lazy"
-            className="h-40 w-full object-cover"
+            className={`h-40 w-full object-cover ${sinStock ? "opacity-60 grayscale" : ""}`}
           />
         ) : (
-          <div className="flex h-40 items-center justify-center bg-orange-50 text-4xl font-bold text-orange-300">
+          <div
+            className={`flex h-40 items-center justify-center bg-orange-50 text-4xl font-bold text-orange-300 ${sinStock ? "opacity-60 grayscale" : ""}`}
+          >
             {producto.nombre.charAt(0)}
           </div>
         )}
-        {enCarrito > 0 && (
+        {sinStock && (
+          <span className="absolute right-2 top-2 rounded-full bg-slate-700 px-2.5 py-1 text-xs font-semibold text-white shadow">
+            Sin stock
+          </span>
+        )}
+        {!sinStock && enCarrito > 0 && (
           <span className="absolute right-2 top-2 rounded-full bg-orange-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
             {enCarrito} en el carrito
           </span>
@@ -49,26 +86,41 @@ function ProductoCard({ producto }: { producto: Producto }) {
             {formatearPrecio(producto.precio_base)}
           </span>
           <span className="text-xs text-slate-500">
-            {sinStock ? "Sin stock" : `Stock: ${producto.stock}`}
+            {sinStock
+              ? "Sin stock"
+              : alcanzoStock
+                ? "Sin más stock"
+                : `Stock: ${producto.stock}`}
           </span>
         </div>
 
-        <Button
-          disabled={sinStock || alcanzoStock}
-          onClick={() =>
-            agregar({
-              producto_id: producto.id,
-              nombre: producto.nombre,
-              precio_unitario: producto.precio_base,
-            })
-          }
-        >
-          {sinStock
-            ? "No disponible"
-            : alcanzoStock
-              ? "Sin más stock"
-              : "Agregar al carrito"}
-        </Button>
+        <div className="flex gap-2">
+          <SelectorCantidad
+            id={`cantidad-${producto.id}`}
+            valor={cantidad}
+            max={restante}
+            disabled={sinStock || alcanzoStock || agregado}
+            onCambiar={setCantidad}
+          />
+          <Button
+            className="flex-1"
+            variante={agregado ? "exito" : "primario"}
+            disabled={!agregado && (sinStock || alcanzoStock)}
+            onClick={agregado ? undefined : agregarAlCarrito}
+          >
+            {agregado ? (
+              <>
+                <span aria-hidden="true">✓</span>
+                <span className="sr-only">Agregado</span>
+              </>
+            ) : (
+              "Agregar"
+            )}
+          </Button>
+        </div>
+        <p className="-mt-1 h-4 text-center text-xs font-medium text-green-700" aria-live="polite">
+          {agregado && `${agregados} ${agregados === 1 ? "agregado" : "agregados"} al carrito`}
+        </p>
       </div>
     </Card>
   );
