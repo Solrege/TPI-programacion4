@@ -53,3 +53,6 @@ export const numeroMinimo =
   };
 
 export const valorNumerico = (valor: number) => (Number.isNaN(valor) ? "" : valor);
+
+export const ajustarCantidad = (valor: number, max: number) =>
+  Number.isNaN(valor) ? 1 : Math.min(Math.max(Math.trunc(valor), 1), Math.max(max, 1));
