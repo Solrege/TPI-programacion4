@@ -4,6 +4,10 @@ from sqlmodel import col, func, select
 from app.core.base_repository import BaseRepository
 from app.modules.productos.models import Producto
 
+CON_TILDE = "áéíóúüñÁÉÍÓÚÜÑ"
+SIN_TILDE = "aeiouunAEIOUUN"
+QUITAR_TILDES = str.maketrans(CON_TILDE, SIN_TILDE)
+
 
 class ProductoRepository(BaseRepository[Producto]):
     model = Producto
@@ -19,7 +23,9 @@ class ProductoRepository(BaseRepository[Producto]):
     ) -> tuple[list[Producto], int]:
         filtros = [col(Producto.activo).is_(True)]
         if search:
-            filtros.append(col(Producto.nombre).ilike(f"%{search}%"))
+            nombre = func.translate(Producto.nombre, CON_TILDE, SIN_TILDE)
+            texto = search.translate(QUITAR_TILDES)
+            filtros.append(nombre.ilike(f"%{texto}%"))
         if categoria_id is not None:
             filtros.append(Producto.categoria_id == categoria_id)
         if disponible is not None:
