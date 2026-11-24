@@ -34,6 +34,9 @@ class BaseRepository(Generic[T]):
         self.session.flush()
         return entity
 
+    def refresh(self, entity: T, attributes: list[str] | None = None) -> None:
+        self.session.refresh(entity, attributes)
+
     def delete(self, entity: T) -> None:
         self.session.delete(entity)
         self.session.flush()

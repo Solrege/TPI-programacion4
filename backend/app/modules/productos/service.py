@@ -59,7 +59,7 @@ class ProductoService:
                 self._validar_categoria(uow, cambios["categoria_id"])
             producto.sqlmodel_update(cambios)
             uow.productos.add(producto)
-            uow.session.refresh(producto, ["categoria"])
+            uow.productos.refresh(producto, ["categoria"])
             return ProductoRead.model_validate(producto)
 
     def actualizar_stock(
