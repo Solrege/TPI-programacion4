@@ -33,7 +33,7 @@ function AdminResumenPage() {
     { titulo: "En preparación", valor: r.en_preparacion, acento: "border-l-blue-400" },
     { titulo: "Entregados", valor: r.entregados, acento: "border-l-green-500" },
     { titulo: "Cancelados", valor: r.cancelados, acento: "border-l-slate-400" },
-    { titulo: "Pedidos de hoy", valor: r.pedidos_hoy, acento: "border-l-orange-500" },
+    { titulo: "Pedidos de hoy", valor: r.pedidos_hoy, acento: "border-l-brand-500" },
     {
       titulo: "Ingresos (entregados)",
       valor: formatearPrecio(r.ingresos_entregados),

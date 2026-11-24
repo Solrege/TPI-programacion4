@@ -43,7 +43,7 @@ function LoginPage() {
       pie={
         <>
           ¿No tenés cuenta?{" "}
-          <Link to="/register" className="font-medium text-orange-600 dark:text-orange-400 hover:underline">
+          <Link to="/register" className="font-medium text-brand-600 dark:text-brand-400 hover:underline">
             Registrate
           </Link>
         </>

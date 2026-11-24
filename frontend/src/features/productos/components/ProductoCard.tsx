@@ -55,7 +55,7 @@ function ProductoCard({ producto }: { producto: Producto }) {
           />
         ) : (
           <div
-            className={`flex h-40 items-center justify-center bg-orange-50 dark:bg-orange-950/40 text-4xl font-bold text-orange-300 dark:text-orange-500 ${sinStock ? "opacity-60 grayscale" : ""}`}
+            className={`flex h-40 items-center justify-center bg-brand-50 dark:bg-brand-950/40 text-4xl font-bold text-brand-300 dark:text-brand-500 ${sinStock ? "opacity-60 grayscale" : ""}`}
           >
             {producto.nombre.charAt(0)}
           </div>
@@ -66,14 +66,14 @@ function ProductoCard({ producto }: { producto: Producto }) {
           </span>
         )}
         {!sinStock && enCarrito > 0 && (
-          <span className="absolute right-2 top-2 rounded-full bg-orange-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+          <span className="absolute right-2 top-2 rounded-full bg-brand-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
             {enCarrito} en el carrito
           </span>
         )}
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <span className="text-xs font-medium uppercase tracking-wide text-orange-600 dark:text-orange-400">
+        <span className="text-xs font-medium uppercase tracking-wide text-brand-600 dark:text-brand-400">
           {producto.categoria.nombre}
         </span>
         <h2 className="font-semibold text-slate-900 dark:text-slate-100">{producto.nombre}</h2>

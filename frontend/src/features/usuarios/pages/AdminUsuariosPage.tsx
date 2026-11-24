@@ -56,7 +56,7 @@ function AdminUsuariosPage() {
       header: "Rol",
       cell: (info) =>
         info.getValue() === "admin" ? (
-          <Etiqueta texto="Admin" clases="bg-orange-100 dark:bg-orange-900/40 text-orange-800 dark:text-orange-200" />
+          <Etiqueta texto="Admin" clases="bg-brand-100 dark:bg-brand-900/40 text-brand-800 dark:text-brand-200" />
         ) : (
           <Etiqueta texto="Cliente" clases="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300" />
         ),
