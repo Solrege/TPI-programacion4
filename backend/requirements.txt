@@ -4,8 +4,9 @@
 # Framework REST y OpenAPI (el extra instala uvicorn y email-validator)
 fastapi[standard]==0.165.0
 
-# ORM y schemas (Pydantic v2)
+# ORM y schemas (Pydantic v2); SQLAlchemy lo instala SQLModel y se fija aparte
 sqlmodel==0.0.50
+sqlalchemy==2.1.9
 
 # Driver de PostgreSQL
 psycopg2-binary==2.9.13
