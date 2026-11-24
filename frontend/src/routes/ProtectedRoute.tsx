@@ -14,7 +14,7 @@ function ProtectedRoute({ roles }: ProtectedRouteProps) {
   if (cargando) {
     return (
       <div role="status" className="flex items-center justify-center gap-3 py-16 text-slate-600 dark:text-slate-400">
-        <span className="size-5 animate-spin rounded-full border-2 border-orange-600 border-t-transparent" />
+        <span className="size-5 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
         Verificando sesión...
       </div>
     );

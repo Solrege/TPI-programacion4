@@ -11,7 +11,7 @@ const SECCIONES = [
 function claseSeccion({ isActive }: { isActive: boolean }) {
   return `whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors ${
     isActive
-      ? "border-orange-600 text-orange-700 dark:text-orange-300"
+      ? "border-brand-600 text-brand-700 dark:text-brand-300"
       : "border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
   }`;
 }

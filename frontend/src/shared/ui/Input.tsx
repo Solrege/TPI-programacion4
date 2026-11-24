@@ -7,7 +7,7 @@ import type {
 
 const BASE =
   "w-full rounded-md border bg-white dark:bg-slate-900 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 outline-none transition focus:ring-2";
-const OK = "border-slate-300 dark:border-slate-600 focus:border-orange-500 focus:ring-orange-200 dark:focus:ring-orange-900";
+const OK = "border-slate-300 dark:border-slate-600 focus:border-brand-500 focus:ring-brand-200 dark:focus:ring-brand-900";
 const ERROR = "border-red-400 focus:border-red-500 focus:ring-red-200 dark:focus:ring-red-900";
 
 interface CampoProps {
@@ -86,7 +86,7 @@ export function Checkbox({ id, label, ...props }: CheckboxProps) {
       <input
         id={id}
         type="checkbox"
-        className="size-4 rounded border-slate-300 dark:border-slate-600 accent-orange-600"
+        className="size-4 rounded border-slate-300 dark:border-slate-600 accent-brand-600"
         {...props}
       />
       {label}
